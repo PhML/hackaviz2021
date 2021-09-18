@@ -10,7 +10,7 @@ d3.csv("pop_qp.csv", d3.autoType).then((csv) => {
 const draw = (data) => {
   // Creates sources <svg> element
   const svg = d3
-    .select("body")
+    .select("#BarChart")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom);
