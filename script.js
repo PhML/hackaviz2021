@@ -189,6 +189,11 @@ function handleStepEnter(response) {
       changeColorOnThreshold(41000, "blue", default_bar_color, "pop_com", transition);
       updateXOrder("pop_com", "nom_commune", transition);
       break;
+    case "pop_qp":
+      transition = svg.transition().duration(1000);
+      updateData("nom_commune", "pop_mun", transition)
+      updateXOrder("pop_mun", "nom_commune", transition);
+      break;
   }
 }
 
