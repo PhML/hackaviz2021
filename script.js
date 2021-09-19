@@ -8,7 +8,7 @@ var step = article.selectAll(".step");
 ////////////////////////////////////////////////////////////////////////////////
 //                             GRAPHICS                                       //
 ////////////////////////////////////////////////////////////////////////////////
-const margin = { top: 40, bottom: 100, left: 120, right: 20 };
+const margin = { top: 40, bottom: 200, left: 120, right: 20 };
 const width = 800 - margin.left - margin.right;
 const height = 600 - margin.top - margin.bottom;
 
