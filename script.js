@@ -166,20 +166,20 @@ function handleStepEnter(response) {
   switch (response.element.dataset.step) {
     case "positions":
       figure.select("img").remove();
-      figure.append("img").attr("src", "./emplacements.png");
+      figure.append("img").attr("src", "./img/emplacements.png");
       break;
     case "qp_centre":
       figure.select("img").remove();
-      figure.append("img").attr("src", "./qp_centre.png");
+      figure.append("img").attr("src", "./img/qp_centre.png");
       break;
     case "communes_centre":
       figure.select("img").remove();
-      figure.append("img").attr("src", "./communes_centre.png");
+      figure.append("img").attr("src", "./img/communes_centre.png");
       break;
     case "pop_commune":
       figure.select("img").remove();
       // Parse the Data
-      d3.csv("pop_commune.csv", d3.autoType).then((data) => {
+      d3.csv("./data/pop_commune.csv", d3.autoType).then((data) => {
         current_data = data;
         draw(data, "nom_commune", "pop_com");
       });
