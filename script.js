@@ -12,6 +12,7 @@ const margin = { top: 40, bottom: 200, left: 120, right: 20 };
 const width = 800 - margin.left - margin.right;
 const height = 600 - margin.top - margin.bottom;
 
+const default_bar_color = "#69b3a2";
 const svg = figure
   .append("svg")
   .attr("width", width + margin.left + margin.right)
@@ -51,7 +52,7 @@ const draw = (data, xName, yName) => {
     .join("rect")
     .attr("x", (d) => x(d[xName]))
     .attr("width", x.bandwidth())
-    .attr("fill", "#69b3a2")
+    .attr("fill", default_bar_color)
     // no bar at the beginning thus:
     .attr("height", (d) => height - y(0)) // always equal to 0
     .attr("y", (d) => y(0));
