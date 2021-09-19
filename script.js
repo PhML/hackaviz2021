@@ -206,6 +206,19 @@ function handleStepEnter(response) {
       updateData("nom_commune", "pop_mun", transition)
       updateXOrder("pop_mun", "nom_commune", transition);
       break;
+    case "tx_pop_qp":
+      transition = svg.transition().duration(1000);
+      updateData("nom_commune", "tx_pop", transition)
+      updateXOrder("tx_pop", "nom_commune", transition);
+      break;
+    case "grand_combe":
+      transition = svg.transition().duration(1000);
+      highlightBars(["La Grand-Combe"], "red", "nom_commune", transition)
+      break;
+    case "tx_pop_toulouse":
+      transition = svg.transition().duration(1000);
+      highlightBars(["Toulouse"], "red", "nom_commune", transition)
+      break;
   }
 }
 
