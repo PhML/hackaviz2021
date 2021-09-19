@@ -106,6 +106,18 @@ const changeColorOnThreshold = (
     .style("fill", (d) => (d[yName] >= threshold ? color_above : color_below));
 };
 
+const highlightBars = (
+  bars,
+  color,
+  yName,
+  t
+) => {
+  svg
+    .selectAll("rect")
+    .transition(t)
+    .style("fill", (d) => (bars.includes(d[yName]) ? color : "grey"));
+};
+
 // A function that create / update the plot for a given variable:
 const updateData = (xDataName, yDataName, t) => {
   // X axis
