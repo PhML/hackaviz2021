@@ -219,6 +219,17 @@ function handleStepEnter(response) {
       transition = svg.transition().duration(1000);
       highlightBars(["Toulouse"], "red", "nom_commune", transition)
       break;
+    case "superficie":
+      transition = svg.transition().duration(1000);
+      updateData("nom_commune", "superficie_qp", transition)
+      updateXOrder("superficie_qp", "nom_commune", transition);
+      highlightBars(["Toulouse", "Sète"], "red", "nom_commune", transition)
+      break;
+    case "densité":
+      transition = svg.transition().duration(1000);
+      updateData("nom_commune", "density_qp", transition)
+      updateXOrder("density_qp", "nom_commune", transition);
+      break;
   }
 }
 
