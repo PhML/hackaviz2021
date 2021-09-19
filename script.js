@@ -15,6 +15,7 @@ const height = 600 - margin.top - margin.bottom;
 const default_bar_color = "#69b3a2";
 
 let current_data;
+let transition;
 
 const svg = figure
   .append("svg")
@@ -106,22 +107,21 @@ const changeColorOnThreshold = (
 };
 
 // A function that create / update the plot for a given variable:
-const updateData = (xDataName, yDataName) => {
+const updateData = (xDataName, yDataName, t) => {
   // X axis
   x.domain(current_data.map((d) => d[xDataName]));
-  xAxis.transition().duration(1000).call(d3.axisBottom(x));
+  xAxis.transition(t).call(d3.axisBottom(x));
 
   // Add Y axis
   y.domain([0, d3.max(current_data, (d) => +d[yDataName])]);
-  yAxis.transition().duration(1000).call(d3.axisLeft(y));
+  yAxis.transition(t).call(d3.axisLeft(y));
 
   // variable u: map current_data to existing bars
   const u = svg.selectAll("rect").data(current_data);
 
   // update bars
   u.join("rect")
-    .transition()
-    .duration(1000)
+    .transition(t)
     .attr("x", (d) => x(d[xDataName]))
     .attr("y", (d) => y(d[yDataName]))
     .attr("width", x.bandwidth())
@@ -185,10 +185,9 @@ function handleStepEnter(response) {
       });
       break;
     case "petites_communes":
-      // updateData("nom_commune", "pop_mun")
-      const t = svg.transition().duration(750);
-      changeColorOnThreshold(41000, "blue", default_bar_color, "pop_com", t);
-      updateXOrder("pop_com", "nom_commune", t);
+      transition = svg.transition().duration(750);
+      changeColorOnThreshold(41000, "blue", default_bar_color, "pop_com", transition);
+      updateXOrder("pop_com", "nom_commune", transition);
       break;
   }
 }
