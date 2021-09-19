@@ -107,6 +107,14 @@ function handleStepEnter(response) {
       figure.select("img").remove();
       figure.append("img").attr("src", "./emplacements.png");
       break;
+    case "qp_centre":
+      figure.select("img").remove();
+      figure.append("img").attr("src", "./qp_centre.png");
+      break;
+    case "communes_centre":
+      figure.select("img").remove();
+      figure.append("img").attr("src", "./communes_centre.png");
+      break;
     case "pop_commune":
       figure.select("img").remove();
       // Parse the Data
