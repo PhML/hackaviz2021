@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
   <meta charset="utf-8" />
@@ -9,14 +9,76 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="./script.js"></script>
+  <script src="https://unpkg.com/intersection-observer"></script>
+  <script src="https://unpkg.com/scrollama"></script>
   <link href="./style.css" rel="stylesheet" />
   <link rel="icon" href="./Logo_TDV_4.png" sizes="32x32" />
   <link rel="icon" href="./Logo_TDV_4.png" sizes="192x192" />
 </head>
 
 <body>
-  <div id="BarChart" />
+  <main>
+    <section id="intro">
+      <h1 class="intro__hed">Quartiers Prioritaires en Occitanie</h1>
+      <p class="intro__dek">
+        Faites défiler pour voir la dataviz
+      </p>
+    </section>
+
+    <section id="scrolly">
+      <figure id="Chart">
+      </figure>
+
+      <article>
+        <div class="step" data-step="1">
+          <p>En 2015, l’Occitanie compte <span class="big">105</span>
+            <span class="tooltip">Quartiers Prioritaires
+              <span class="tooltiptext">Un quartier est prioritaire si la moité des «unités de
+                consommation»
+                qui le composent ont un revenu inférieur à 11 250€ par an.</span>
+            </span> répartis dans <span class="big">49</span> communes de <span class="big">12</span>
+            départements.
+          </p>
+          et tatayoyo
+        </div>
+
+        <div class="step" data-step="2">
+          <p>Les Quartiers Prioritaires nes sont <span class="big">pas</span> des phénomènes de <span
+              class="big">périphérie</span></p>
+        </div>
+
+        <div class="step" data-step="3">
+          <p>En effet
+            <span class="big">
+              <span class="tooltip">
+                1/4
+                <span class="tooltiptext">
+                  25 quartiers sur les 105. Soit 24%.
+                </span>
+              </span>
+            </span> d’entre eux se trouvent en <span class="big">Centre / Cœur de ville</span>
+          </p>
+        </div>
+
+        <div class="step" data-step="4">
+          <p>Cela veux dire qu’ <span class="big"><span class="tooltip">1 centre ville sur 2 <span
+                  class="tooltiptext">25 des 48 communes, soit 52%</span></span></span> a un Quartier
+            Prioritaire en son sein</p>
+        </div>
+        <div class="step" data-step="5">
+          <p>Les Quartiers Prioritaires ne se trouvent <span class="big">pas que</span> dans les <span
+              class="big">grandes</span> communes</p>
+        </div>
+        <div class="step" data-step="6">
+          <p>Les <span class="big">3/4</span> d’entre elles ont <span class="big">moins</span> de <span
+              class="big">6 315</span>
+            habitants</p>
+        </div>
+      </article>
+    </section>
+
+    <section id="outro"></section>
+  <script src="./script.js"></script>
 </body>
 
 </html>

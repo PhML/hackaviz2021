@@ -1,22 +1,25 @@
+// using d3 for convenience
+var main = d3.select("main");
+var scrolly = main.select("#scrolly");
+var figure = scrolly.select("figure");
+var article = scrolly.select("article");
+var step = article.selectAll(".step");
+
+////////////////////////////////////////////////////////////////////////////////
+//                             GRAPHICS                                       //
+////////////////////////////////////////////////////////////////////////////////
 const margin = { top: 40, bottom: 100, left: 120, right: 20 };
 const width = 800 - margin.left - margin.right;
 const height = 600 - margin.top - margin.bottom;
 
-// Parse the Data
-d3.csv("pop_commune.csv", d3.autoType).then((data) =>
-  draw(data, "nom_commune", "pop_mun")
-);
+const svg = figure
+  .append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", `translate(${margin.left},${margin.top})`);
 
 const draw = (data, xName, yName) => {
-  // append the svg object to the body of the page
-  const svg = d3
-    .select("#BarChart")
-    .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", `translate(${margin.left},${margin.top})`);
-
   // X axis
   const x = d3
     .scaleBand()
@@ -64,3 +67,79 @@ const draw = (data, xName, yName) => {
       return i * 10;
     });
 };
+
+////////////////////////////////////////////////////////////////////////////////
+//                             SCROLLAMA                                      //
+////////////////////////////////////////////////////////////////////////////////
+// initialize the scrollama
+var scroller = scrollama();
+
+// generic window resize listener event
+function handleResize() {
+  // 1. update height of step elements
+  var stepH = Math.floor(window.innerHeight * 0.75);
+  step.style("height", stepH + "px");
+
+  var figureHeight = window.innerHeight / 2;
+  var figureMarginTop = (window.innerHeight - figureHeight) / 2;
+
+  figure
+    .style("height", figureHeight + "px")
+    .style("top", figureMarginTop + "px");
+
+  // 3. tell scrollama to update new element dimensions
+  scroller.resize();
+}
+
+// scrollama event handlers
+function handleStepEnter(response) {
+  console.log(response);
+  // response = { element, direction, index }
+
+  // add color to current step only
+  step.classed("is-active", function (d, i) {
+    return i === response.index;
+  });
+
+  // update graphic based on step
+  if (response.element.dataset.step === "1") {
+    // figure.select("img").attr("src", "./newplot.png");
+    figure.append("img").attr("src", "./newplot.png");
+  } else {
+    figure.select("img").remove();
+    // Parse the Data
+    d3.csv("pop_commune.csv", d3.autoType).then((data) => {
+      draw(data, "nom_commune", "pop_mun");
+    });
+  }
+}
+
+function setupStickyfill() {
+  d3.selectAll(".sticky").each(function () {
+    Stickyfill.add(this);
+  });
+}
+
+function init() {
+  setupStickyfill();
+
+  // 1. force a resize on load to ensure proper dimensions are sent to scrollama
+  handleResize();
+
+  // 2. setup the scroller passing options
+  // 		this will also initialize trigger observations
+  // 3. bind scrollama event handlers (this can be chained like below)
+  scroller
+    .setup({
+      step: "#scrolly article .step",
+      offset: 0.5,
+      debug: false,
+    })
+    .onStepEnter(handleStepEnter);
+
+  // setup resize event
+  window.addEventListener("resize", handleResize);
+}
+
+// kick things off
+init();
