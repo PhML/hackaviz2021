@@ -13,6 +13,9 @@ const width = 800 - margin.left - margin.right;
 const height = 600 - margin.top - margin.bottom;
 
 const default_bar_color = "#69b3a2";
+
+let current_data;
+
 const svg = figure
   .append("svg")
   .attr("width", width + margin.left + margin.right)
@@ -20,30 +23,30 @@ const svg = figure
   .append("g")
   .attr("transform", `translate(${margin.left},${margin.top})`);
 
-const draw = (data, xName, yName) => {
-  // X axis
-  const x = d3
-    .scaleBand()
-    .range([0, width])
-    .domain(data.map((d) => d[xName]))
-    .padding(0.2);
+// X axis
+const x = d3.scaleBand().range([0, width]).padding(0.2);
 
-  svg
-    .append("g")
-    .attr("transform", `translate(0,${height})`)
+const xAxis = svg.append("g").attr("transform", `translate(0,${height})`);
+
+// Add Y axis
+const y = d3.scaleLinear().range([height, 0]);
+
+const yAxis = svg.append("g").attr("class", "myYaxis");
+
+const draw = (data, xName, yName) => {
+  // x.domain(data.map((d) => d[xName]));
+  x.domain(current_data.sort((d) => d["pop_com"]).map((d) => d[xName]));
+
+  xAxis
+    .transition()
+    .duration(800)
     .call(d3.axisBottom(x))
     .selectAll("text")
     .attr("transform", "translate(-10,0)rotate(-45)")
     .style("text-anchor", "end");
 
-  // Add Y axis
-  const y = d3
-    .scaleLinear()
-    .domain([0, d3.max(data, (d) => d[yName])])
-    .nice()
-    .range([height, 0]);
-
-  svg.append("g").call(d3.axisLeft(y));
+  y.domain([0, d3.max(data, (d) => d[yName])]).nice();
+  yAxis.transition().duration(1000).call(d3.axisLeft(y));
 
   // Bars
   svg
@@ -67,6 +70,63 @@ const draw = (data, xName, yName) => {
     .delay((d, i) => {
       return i * 10;
     });
+};
+
+const updateXOrder = (order, xName, t) => {
+  x.domain(
+    current_data.sort((a, b) => a[order] - b[order]).map((d) => d[xName])
+  );
+
+  svg
+    .selectAll("rect")
+    .data(current_data, (d) => d[xName])
+    .order()
+    .transition(t)
+    .delay((d, i) => i * 20)
+    .attr("x", (d) => x(d[xName]));
+
+  xAxis
+    .transition(t)
+    .call(d3.axisBottom(x))
+    .selectAll(".tick")
+    .delay((d, i) => i * 20);
+};
+
+const changeColorOnThreshold = (
+  threshold,
+  color_below,
+  color_above,
+  yName,
+  t
+) => {
+  svg
+    .selectAll("rect")
+    .transition(t)
+    .style("fill", (d) => (d[yName] >= threshold ? color_above : color_below));
+};
+
+// A function that create / update the plot for a given variable:
+const updateData = (xDataName, yDataName) => {
+  // X axis
+  x.domain(current_data.map((d) => d[xDataName]));
+  xAxis.transition().duration(1000).call(d3.axisBottom(x));
+
+  // Add Y axis
+  y.domain([0, d3.max(current_data, (d) => +d[yDataName])]);
+  yAxis.transition().duration(1000).call(d3.axisLeft(y));
+
+  // variable u: map current_data to existing bars
+  const u = svg.selectAll("rect").data(current_data);
+
+  // update bars
+  u.join("rect")
+    .transition()
+    .duration(1000)
+    .attr("x", (d) => x(d[xDataName]))
+    .attr("y", (d) => y(d[yDataName]))
+    .attr("width", x.bandwidth())
+    .attr("height", (d) => height - y(d[yDataName]))
+    .attr("fill", default_bar_color);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -120,8 +180,15 @@ function handleStepEnter(response) {
       figure.select("img").remove();
       // Parse the Data
       d3.csv("pop_commune.csv", d3.autoType).then((data) => {
-        draw(data, "nom_commune", "pop_mun");
+        current_data = data;
+        draw(data, "nom_commune", "pop_com");
       });
+      break;
+    case "petites_communes":
+      // updateData("nom_commune", "pop_mun")
+      const t = svg.transition().duration(750);
+      changeColorOnThreshold(41000, "blue", default_bar_color, "pop_com", t);
+      updateXOrder("pop_com", "nom_commune", t);
       break;
   }
 }
