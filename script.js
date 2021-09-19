@@ -118,6 +118,13 @@ const highlightBars = (
     .style("fill", (d) => (bars.includes(d[yName]) ? color : "grey"));
 };
 
+const resetBarColorsTo = (color, t) => {
+  svg
+    .selectAll("rect")
+    .transition(t)
+    .style("fill", color);
+};
+
 // A function that create / update the plot for a given variable:
 const updateData = (xDataName, yDataName, t) => {
   // X axis

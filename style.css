@@ -55,6 +55,11 @@ a:hover {
 
 #outro {
   height: 640px;
+  font-size: 2em;
+  margin: 2rem auto 0.5rem auto;
+  color: #f3f3f3;
+  background-color: #262626;
+  text-align: center;
 }
 /* ####################################################################*/
 #scrolly {
