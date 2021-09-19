@@ -102,15 +102,18 @@ function handleStepEnter(response) {
   });
 
   // update graphic based on step
-  if (response.element.dataset.step === "1") {
-    // figure.select("img").attr("src", "./newplot.png");
-    figure.append("img").attr("src", "./newplot.png");
-  } else {
-    figure.select("img").remove();
-    // Parse the Data
-    d3.csv("pop_commune.csv", d3.autoType).then((data) => {
-      draw(data, "nom_commune", "pop_mun");
-    });
+  switch (response.element.dataset.step) {
+    case "positions":
+      figure.select("img").remove();
+      figure.append("img").attr("src", "./emplacements.png");
+      break;
+    case "pop_commune":
+      figure.select("img").remove();
+      // Parse the Data
+      d3.csv("pop_commune.csv", d3.autoType).then((data) => {
+        draw(data, "nom_commune", "pop_mun");
+      });
+      break;
   }
 }
 
