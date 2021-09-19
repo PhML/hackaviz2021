@@ -134,7 +134,7 @@ figure p {
 .tooltip .tooltiptext {
   font-size: 1rem;
   visibility: hidden;
-  width: 80rem;
+  width: 20rem;
   background-color: #555;
   color: #fff;
   text-align: center;
